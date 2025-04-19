@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI‑Tutor</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="bg-gradient"></div>
+
+  <main class="card">
+    <!-- Avatar image -->
+    <div class="avatar-wrapper">
+      <img id="avatar" src="avatar.png" alt="Avatar" />
+    </div>
+
+    <!-- Chat area -->
+    <div id="chatLog" class="chat-log"></div>
+
+    <!-- Mic & status -->
+    <button id="recordBtn" class="mic" disabled><span class="mic-icon">🎙️</span></button>
+    <p id="status" class="status">Connecting…</p>
+
+    <audio id="assistantAudio"></audio>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
