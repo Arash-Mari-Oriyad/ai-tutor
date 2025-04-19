@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI English Tutor</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 2rem; }
+    #chat-box { margin-bottom: 1rem; }
+    .bubble { margin: 5px 0; padding: 10px; border-radius: 10px; max-width: 80%; }
+    .user { background: #dcf8c6; align-self: flex-end; }
+    .bot  { background: #eee; }
+    .chat-line { display: flex; flex-direction: column; align-items: flex-start; }
+  </style>
+</head>
+<body>
+  <h2>🧠 AI English Tutor</h2>
+  <div id="chat-box"></div>
+  <input id="user-input" placeholder="Type here..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <script>
+    let state = null;
+
+    async function sendMessage() {
+      const input = document.getElementById('user-input');
+      const message = input.value.trim();
+      if (!message && state) return;
+
+      if (message) {
+        displayMessage(message, 'user');
+      }
+
+      const res = await fetch('http://localhost:8000/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, state })
+      });
+
+      const data = await res.json();
+      state = data;
+
+      const reply = data.system_messages.at(-1);
+      if (reply) displayMessage(reply, 'bot');
+
+      if (data.level) {
+        displayMessage(`✅ Your English Level: <strong>${data.level}</strong>`, 'bot');
+        state = null;
+      }
+
+      input.value = '';
+    }
+
+    function displayMessage(text, sender) {
+      const chatBox = document.getElementById('chat-box');
+      const div = document.createElement('div');
+      div.className = `chat-line bubble ${sender}`;
+      div.innerHTML = text;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    window.onload = sendMessage;
+  </script>
+</body>
+</html>
